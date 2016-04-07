@@ -52,6 +52,23 @@ mkdir -p $(dirname $PROFILE_PATH)
 echo "export PATH=$ACTUAL_INSTALL_PATH/bin:\$PATH" >> $PROFILE_PATH
 echo "export LD_LIBRARY_PATH=$ACTUAL_INSTALL_PATH/lib:\$LD_LIBRARY_PATH" >> $PROFILE_PATH
 
+
+# Install ghost script.
+echo "-----> Installing Ghostscript 9.14"
+
+BUILD_DIR=$1
+PACKAGE="https://elbongurk-public.s3.amazonaws.com/ghostscript.tgz"
+LOCATION="$BUILD_DIR/vendor/gs"
+
+mkdir -p $LOCATION
+curl $PACKAGE -s -o - | tar xzf - -C $LOCATION
+
+echo "-----> Building runtime environment for Ghostscript"
+
+mkdir -p $BUILD_DIR/.profile.d
+echo "export PATH=\"\$HOME/vendor/gs/bin:\$PATH\"" > $BUILD_DIR/.profile.d/ghostscript.sh
+
+
 # DOWNLOAD_URL="http://www.imagemagick.org/download/ImageMagick-6.9.2-0.tar.gz"
 
 # echo "DOWNLOAD_URL = " $DOWNLOAD_URL | indent
